@@ -39,10 +39,10 @@ router.post("/register", [
             secure: process.env.NODE_ENV === "production",
             maxAge: 1000 * 60 * 60 * 24, // 1 day
         })
-        return res.sendStatus(200).json({message: "User registered successfully"});
+        return res.status(200).send({message: "User registered successfully"});
     } catch (error) {
         console.log(error);
         res.status(500).send({message: "Error registering user"});
     }
 })
-export default router;
+export default router; 
