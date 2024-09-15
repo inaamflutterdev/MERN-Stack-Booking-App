@@ -42,8 +42,8 @@ router.post(
         return res.status(400).json({ message: "Invalid credentials" });
       }
 
-       // Generate a JWT token
-       const token = jwt.sign(
+      // Generate a JWT token
+      const token = jwt.sign(
         { userId: user.id },
         process.env.JWT_SECRET_KEY as string,
         { expiresIn: "1d" }
@@ -55,7 +55,7 @@ router.post(
         secure: process.env.NODE_ENV === "production",
         maxAge: 1000 * 60 * 60 * 24, // 1 day
       });
-      return res.status(200).json({ userId: user._id })
+      return res.status(200).json({ userId: user._id });
     } catch (error) {
       // Log the error and return a 500 status with the error message
       console.log(error);
@@ -65,6 +65,12 @@ router.post(
 );
 
 router.get("/validate-token", verifyToken, (req: Request, res: Response) => {
-  res.status(200).send({userId: req.userId});
+  res.status(200).send({ userId: req.userId });
+});
+router.post("/logout", (req: Request, res: Response) => {
+  res.cookie("auth_token", "", {
+    expires: new Date(0),
+  });
+  res.send();
 });
 export default router;
